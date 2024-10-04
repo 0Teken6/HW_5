@@ -18,13 +18,13 @@ def director_list_api_view(request):
 @api_view(["GET"])
 def director_detail_api_view(request, id):
     try:
-        directors = Director.objects.get(id=id)
+        director = Director.objects.get(id=id)
     except Director.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND, data={'error': 'Director not found'})
     except Director.MultipleObjectsReturned:
         return Response(status=status.HTTP_400_BAD_REQUEST)
     
-    data = my_serializers.DirectorSerializer(directors).data
+    data = my_serializers.DirectorSerializer(director).data
 
     return Response(data=data, status=status.HTTP_200_OK)
 
@@ -41,13 +41,13 @@ def movie_list_api_view(request):
 @api_view(["GET"])
 def movie_detail_api_view(request, id):
     try:
-        movies = Movie.objects.get(id=id)
+        movie = Movie.objects.get(id=id)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND, data={'error': 'Movie not found'})
     except Movie.MultipleObjectsReturned:
         return Response(status=status.HTTP_400_BAD_REQUEST)
     
-    data = my_serializers.MovieSerializer(movies).data
+    data = my_serializers.MovieDetailSerializer(movie).data
 
     return Response(data=data, status=status.HTTP_200_OK)
 
@@ -64,12 +64,21 @@ def review_list_api_view(request):
 @api_view(["GET"])
 def review_detail_api_view(request, id):
     try:
-        reviews = Review.objects.get(id=id)
+        review = Review.objects.get(id=id)
     except Review.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND, data={'error': 'Review not found'})
     except Review.MultipleObjectsReturned:
         return Response(status=status.HTTP_400_BAD_REQUEST)
     
-    data = my_serializers.ReviewSerializer(reviews).data
+    data = my_serializers.ReviewSerializer(review).data
+
+    return Response(data=data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def movies_reviews_api_view(request):
+    movies = Movie.objects.all()
+
+    data = my_serializers.MovieReviewSerializer(movies, many=True).data
 
     return Response(data=data, status=status.HTTP_200_OK)
