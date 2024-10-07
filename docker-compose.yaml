@@ -1,0 +1,20 @@
+version: '3'
+services:
+  web_api:
+    build: 
+      context: .
+    container_name: web_api
+    command: sh -c "python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - '8000:8000'
+    depends_on:
+      - web_db
+  web_db:
+    image: 'postgres::ll-alpine3.13'
+    hostname: 'web_host'
+    environment:
+      POSTGRES_USER: hw_5_user
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: hw_5
+    ports:
+      - '5432:5432'
