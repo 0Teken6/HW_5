@@ -5,3 +5,4 @@ __pycache__/
 afisha/__pycache__/
 movie_app/__pycache__/
 db.sqlite3
+.env
